@@ -1,0 +1,201 @@
+VB Console Version 2.00
+Programmed By:Srideep Prasad
+Copyright(C) Srideep Prasad
+**********************************************************************************************************************
+
+Introduction -
+-----------------------------------------------------------------------------
+   Visual basic by nature is a GUI application development platform.However
+sometimes,it may be necessary to write text based 32-bit applications
+(also called console applications).Visual Basic does not inherently support
+such applications.To create such applications,you normally have to call the
+Windows API directly which can become difficuilt.Not any more !
+
+What is VBConsole-
+   VBConsole is an ActiveX(tm) DLL that wraps the complicated Windows Console
+API into one easy to use interface.VBConsole has been compiled using Visual
+Basic 6.0 and requires the Visual Basic 6.0 Runtime DLL (MSVBVM60.DLL).It has
+not been tested on Visual Basic 5 but should work well with even Visual Basic
+5.0.
+
+Installing VBConsole-
+   To install VBConsole all you have to do is to unzip the zip file and run the Setup.exe program.To add the option of a console application template,start Visual Basic and select the Standard EXE Template.Remove the Form1 form and add a module and name it as Console and add the following generic code.
+
+
+Sub MAIN()
+    Dim CONSOLE1 As VBCONSOLE.CONSOLE
+    Set CONSOLE1 = CreateObject("VBCONSOLE.CONSOLE")
+    'Use the methods of the Console1 object to create and
+    'manage a console.
+    
+
+End Sub
+
+Select Project > References and add a reference to VBCONSOLE.DLL
+Save the file as Console.Bas in theVB  Template\Projects Directory and the the project in the VB Template\Project directory as VB Console Application.VBP.Exit and restart VB.In the new dialog box a new template titled VB Console Application will now be there !
+
+
+Using VBConsole-
+-----------------------------------------------------------------------------
+ 	  After the installation is completed start Visual Basic.Select the
+Standard EXE template and select References from the Project.Select Visual Basic
+Console Support DLL By Srideep Prasad from the list and VBConsole is ready for
+use...
+If you have created a console template as described above then select
+VB Console Application from the new dialog box and start programming right away.
+
+Note:To use VBConsole you have to create an object referencing VBConsole.
+For Example the following code creates an object variable (Console1) referencing
+the VBConsole DLL
+
+Dim Console1 as VBConsole.Console
+Console1=Createobject("VBCONSOLE.CONSOLE")
+
+VBConsole Methods and features-
+
+NOTE:According to the standard VB conventions parameters enclosed in square
+     brackets are optional
+
+1> CreateConsole - Creates a console Window.
+    Format: ObjectVariable.CreateConsole([Error as string]) where Error is a string variable that returns the Error info if one occurs.
+    Example:Console1.CreateConsole(Error$)
+
+2>OutputConsole - Writes text to a console.
+    Format: ObjectVariable.OutputConsole(Text as string,[Newlineflag as Boolean])
+    Default(s) : NewLineFlag = True
+    Example:Console1.OutputConsole("Hello Console",True)  -  Goes to the next line after printing "Hello Console"
+
+3>InputConsole - Reads text from the console (similar to the Input statement in BASIC)
+    Format: StringVariable = ObjectVariable.InputConsole
+    Example:Text$ = Console1.InputConsole
+
+4>GetCTitle - Gets the console window title.
+    Format:ObjectVariable.GetCTitle(Title as String,[Error as string])
+    Example:Console1.GetCTitle(Title$,Error$)
+
+5>SetCTitle - Sets the console window title.
+    Format:ObjectVariable.SetCTitle(Title as string,[Error as string])
+    Example:Console1.SetCTitle("A Console Trial",Error$)
+
+6>SetColor - Sets the foreground and background color. 
+    Format:ObjectVariable.SetColor(TextColor as long,BackColor as long,[Error as string])
+    The values for the color attributes can be any one of the following-
+      
+     Foreground(Text) Attributes -  
+     Public Const FGREEN = &H2     '  text color contains green.
+     Public Const FBLUE = &H1     '  text color contains blue.
+     Public Const FRED = &H4     '  text color contains red.
+     Public Const FINTENSITY = &H8     '  text color is intensified.
+
+     Background Attributes
+     Public Const BBLUE = &H10    '  background color contains blue.
+     Public Const BGREEN = &H20    '  background color contains green.
+     Public Const BINTENSITY = &H80    '  background color is intensified.
+     Public Const BRED = &H40    '  background color contains red.
+
+     Example:Console1.SetColor(FGREEN,FRED,Error$)
+     Two  colors can be mixed using the OR operator.
+     Console1.SetColor(FBLUE OR FRED OR FINTENSITY,FGREEN,ERROR$)
+		          (Blue + Red = Voilet(Intensified))
+
+7>SetCursor - Sets console attributes.
+    Format: ObjectVariable.SetCursor(CurSize as long,VisibilityFlag as BOOLEAN,[Error as string])
+
+    where CurSize must be between 0 - 100 and determines the size of the
+    cursor in terms of percentage of character size (values of 0 and 100 turn off
+    the cursor).VisibilityFlag is a boolean variable determining the visibility of the cursor.
+
+    Example:Console1.SetCursor(50,True,Error$)
+
+8>GetCursor - Gets console attributes.
+    Format: ObjectVariable.GetCursor(CurSize as long,VisibilityFlag as BOOLEAN,[Error as string])
+
+    where CurSize is the size of the cursor in terms of percentage of character
+    size (values of 0 and 100 turn off the cursor).VisibilityFlag is a boolean
+    variable determining the visibility of the cursor.
+
+    Example:Dim CSize as long,Vis as Boolean
+	      Console1.GetCursor(CSize,Vis,Error$)
+
+9>CloseConsole - Closes the console.
+    Format:ObjectVariable.CloseConsole([Error as String])
+    Example:Console1.CloseConsole(Error$)
+
+10>Newline - Goes to the next line.
+    Format:ObjectVariable.Newline
+    Example:Console1.Newline
+
+11>DisableCriticalEvents - Disbles processing of critical events such as the
+   CTRL-BREAK keys to prevent your program from terminating if the user
+   happens to press CTRL-BREAK.
+
+    Format:ObjectVariable.DisableCriticalEvents([Error As String])
+    Example:Console1.EnableCriticalEvents(Error$)
+
+12>EnableCriticalEvents - Re-enables processing of critical events such as the
+   CTRL-BREAK keypress event and so on.(This is the default state of the
+   application unless the DisableCriticalEvents method is called)
+
+    Format:ObjectVariable.EnableCriticalEvents([Error as string],[ProcessPrevEvents as Boolean])
+    (By default ProcessPrevEvents is False - That is any previous critical
+     events are not processed.If True then the previous critical events are
+     processed)
+    Default(s): ProcessPrevEvents = False
+    Example:Console1.EnableCriticalEvents(Error$,False)
+
+13>GetCursorPosition - Returns the current cursor position.(unsupported)
+    Format:ObjectVariable.GetCursorPosition(X as long,Y as long,[Error as string])
+    Example:Dim X as long,Y as long
+            Console1.GetCursorPosition(X , Y , Error$)
+
+14>Locate - Moves the cursor to a particular position.(unsupported)
+    Format:ObjectVariable.Locate(Row as long,Column as long)
+    Example:Console1.Locate(10,10)
+
+
+
+Sample Program
+-----------------------------------------------------------------------------
+    The file Console Demo.bas contains sample code that you can refer to and
+    the ConsDemo.Exe file is a small demo program created by compiling the 
+    Console Demo.Bas file.
+					
+Uninstalling VBConsole
+-----------------------------------------------------------------------------
+    To Uninstall VBConsole use the Add / Remove programs applet in control
+    panel.
+
+License/Distribution Rights
+-----------------------------------------------------------------------------
+    This software is freeware and is freely distributable
+    (WITHOUT MODIFICATION) for non commercial purposes.
+
+Contacting the Author
+-----------------------------------------------------------------------------
+    If you have any problems or suggestions with VBConsole you can contact me at -
+    srideepprasad@yahoo.com
+
+Changes since version 1.0
+-----------------------------------------------------------------------------
+1>The output Error parameters of methods such as CreateConsole,CloseConsole
+  etc are now optional.
+2>Two new methods EnableCriticalEvents and DisableCriticalEvents have been
+  added
+3>The NewLineFlag parameter of the OutputConsoleMethod is now optional and
+  defaults to True
+
+IMPORTANT:Even though Version 2.0 of VBConsole is easier to use and has many
+improvements, any progams compiled with Version 1.0 of VBConsole are
+completely compatable with VBConsole.
+
+NOTE: VBConsole is designed for VB 6 though it should also work with VB 5. In case it does not
+you could try downloading the latest VB 6 runtime and OLE files from www.zdnet.com/downloads/
+
+About the Author
+-----------------------------------------------------------------------------
+	I Srideep Prasad, have been programming for the past 6 years with a programming 
+experience in VB spanning 5 years, during the course of which I learnt advanced programming
+concepts such as subclassing, multithreading etc. At present I am working on a title bar replacement 
+that will relies on advanced subclassing.
+	At present there are some bugs in the title bar replacement control.I hope to get rid of them
+soon!
